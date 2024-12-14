@@ -1,123 +1,117 @@
-# ZooArcadia-Gestion des Habitats et Animaux
+# ZooArcadia - Gestion des Habitats et Animaux
 
 Bienvenue sur le projet de gestion des habitats et des animaux du Zoo Arcadia. Ce projet permet de consulter les habitats du zoo ainsi que les détails sur les animaux qui y résident, tout en incluant des informations telles que leur état de santé, leur alimentation, leur grammage et l'heure de leur dernière alimentation. Le projet inclut également la gestion des services proposés par le zoo et des avis (reviews) des visiteurs grâce à l'intégration de MongoDB.
-Fonctionnalités
-1.	Liste des habitats : Chaque habitat contient une description et affiche les animaux présents dans celui-ci.
-2.	Détails des animaux : En cliquant sur un animal, une modale affiche des informations détaillées comme l'image, le nom, l'état de santé, l'alimentation et le grammage.
-3.	Système de vues : Chaque fois qu'un utilisateur visualise les détails d'un animal, le compteur de vues de cet animal est incrémenté.
-4.	Gestion des services : Une collection MongoDB services permet de stocker et de récupérer les services offerts par le zoo.
-5.	Gestion des avis : Une collection MongoDB reviews permet de gérer les avis des visiteurs du zoo.
-Technologies Utilisées
-Front-end :
-•	HTML, CSS
-•	JavaScript : Pour la gestion des modales et des requêtes AJAX.
-•	Effets de survol pour une meilleure interactivité.
-Back-end :
-•	PHP : Pour la génération dynamique des pages et la gestion des requêtes.
-•	PDO (PHP Data Objects) : Pour la gestion des interactions avec la base de données relationnelle MySQL.
-•	MongoDB : Pour gérer des collections supplémentaires (services et reviews).
-Base de données :
-•	MySQL : Pour stocker les informations sur les animaux, les habitats, et les logs d'alimentation.
-•	MongoDB : Pour les services et les avis des visiteurs.
-Prérequis
-•	PHP >= 8.1.10
-•	MySQL
-•	MongoDB
-•	Serveur web Apache 2.4.54
-Installation
-1.	Clonez ce dépôt sur votre machine locale :
-https://github.com/Samirolivier/ZooArcadia
-2.	Naviguez dans le dossier du projet :
-cd ZooArcadia
-3.	Importez la base de données MySQL et NoSQL :
 
-•	Importez le fichier zooarcadia_9_tables_bon.sql fourni dans le dossier export/. Vous pouvez le faire via phpMyAdmin ou en ligne de commande :
-mysql -u root -p zooarcadia < export/ zooarcadia_9_tables_bon.sql
-•	Importez les fichiers zooarcadia.reviews.json et zooarcadia.services.json fourni dans le dossier export/. Vous pouvez le faire via MongoDb Compass ou en ligne de commande :
-mongoimport --db zooarcadia --collection services --file zooarcadia.services.json –jsonArray
-Mais avant assurez-vous de démarrer le serveur MongoDB avec mongod.
+## Fonctionnalités
 
-4.	Configurez les paramètres de connexion à la base de données MySQL dans le fichier config/config_sql.php :
-
-<?php
-$host = 'localhost';
-$dbname = 'zooarcadia';
-$username = 'root';
-$password = '';
-try {
-$pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-die("Erreur de connexion à la base de données : " . $e->getMessage());
-}
-?>
-
-5.	Configurez MongoDB dans config/config_nosql.php :
-
-<?php
-require __DIR__ . '/../vendor/autoload.php'; // Charger la bibliothèque MongoDB via Composer
-try {
-$client = new MongoDB\Client("mongodb://localhost:27017");
-$mongoDB = $client;
-} catch (Exception $e) {
-die("Erreur de connexion à MongoDB : " . $e->getMessage());
-}
-?>
-
-6.	Démarrez votre serveur web et accédez à l'application :
-•	Assurez-vous que votre serveur pointe vers le dossier du projet.
-•	Ouvrez un navigateur et accédez à :
-http://localhost/arcadia/index.php
-
-Utilisation
-1.	Navigation principale :
-- Depuis la page d'accueil, accédez aux sections Habitats, Services, Contact, etc.
-2.	Page des habitats :
-- Voir la liste des habitats et cliquer sur un habitat pour voir les animaux présents.
-- Cliquer sur un animal pour afficher ses détails dans une modale interactive. Les informations incluent l'image, l'état de santé, le type de nourriture, le grammage, et le compteur de vues.
-3.	Services :
-- La page Services utilise MongoDB pour afficher dynamiquement les services disponibles au zoo. Vous pouvez ajouter, modifier ou supprimer des services directement dans la collection services de MongoDB.
-4.	Avis des visiteurs :
-- Les visiteurs peuvent laisser un avis sur leur expérience au zoo. Ces avis sont stockés dans la collection reviews de MongoDB et peuvent être affichés ou filtrés sur une page dédiée.
+- **Liste des habitats** : Chaque habitat contient une description et affiche les animaux présents dans celui-ci.
+- **Détails des animaux** : En cliquant sur un animal, une modale affiche des informations détaillées comme l'image, le nom, l'état de santé, l'alimentation et le grammage.
+- **Gestion des services** : Une collection MongoDB services permet de stocker et de récupérer les services offerts par le zoo.
+- **Gestion des avis** : Une collection MongoDB reviews permet de gérer les avis des visiteurs du zoo.
   
-Exemples de requêtes
+## Technologies Utilisées
 
-MySQL :
+- **Front-end** :
+  - HTML, CSS
+  - JavaScript pour la gestion des modales et des requêtes AJAX
+  - Effets de survol pour une meilleure interactivité
+    
+- **Back-end** :
+  - PHP : pour la génération dynamique des pages et la gestion des requêtes
+  - PDO (PHP Data Objects) : pour la gestion des interactions avec la base de données MySQL
+  - MongoDB : Pour gérer des collections supplémentaires (services et reviews).
+    
+- **Base de données** :
+  - MySQL pour stocker les informations sur les animaux, les habitats, et les logs d'alimentation.
+  - MongoDB : Pour les services et les avis des visiteurs.
 
-•	Mise à jour des informations du modal sur les aniamaux
+## Prérequis
 
-document.getElementById('modalImage').src = data.image || 'placeholder.jpg';
-document.getElementById('modalName').textContent = data.name || 'Nom non disponible';
-document.getElementById('modalFood').textContent = 'Nourriture donnée : ' + (data.food || 'Non disponible');
-document.getElementById('modalWeight').textContent = 'Grammage : ' + (data.weight || 'Non disponible') + ' g';
-document.getElementById('modalHealthStatus').textContent = 'État de santé : ' + (data.health_status || 'Non disponible');
-document.getElementById('modalViews').textContent = 'Nombre de vues : ' + (data.views || '0');
+- PHP >= 8.1.100
+- MySQL
+- MongoDG
+- Serveur web Apache 2.4.54
 
-•	Requête préparée pour éviter les injections SQL lors d’une insertion d'un message de contact :
+## Installation
+
+1. Clonez ce dépôt sur votre machine locale :
+
+    ```bash
+    git clone https://github.com/Samirolivier/Arcadia-Zoo.git
+    ```
+
+2. Naviguez dans le dossier du projet :
+
+    ```bash
+    cd Arcadia-Zoo
+    ```
+
+3. Importez la base de données `zooarcadia.sql` fournie dans le dossier `config/`. Vous pouvez le faire via phpMyAdmin.
+
+    ```bash
+    mysql -u root -p zooarcadia < config/zooarcadia.sql
+    ```
+
+4. Configurez les paramètres de connexion à la base de données dans le fichier `config/config.php` :
+
+    ```php
+    <?php
+    $host = 'localhost';
+    $dbname = 'zooarcadia';
+    $username = 'root';
+    $password = '';
+
+    try {
+        $pdo = new PDO("mysql:host=$host;dbname=$dbname, $username, $password);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    } catch (PDOException $e) {
+        die("Erreur de connexion à la base données : " . $e->getMessage();
+    }
+    ?>
+
+5. Assurez-vous que votre serveur web pointe vers le dossier du projet.
+
+## Utilisation
+
+1. Une fois que vous avez configuré la base de données et démarré le serveur, ouvrez un navigateur et accédez à la page d'accueil du projet :
+
+    ```bash
+    http://localhost/arcadia/index.php
+    ```
+
+2. Depuis la page d'accueil, vous pouvez naviguer vers les sections **Habitats**, **Services**, **Contact**, etc.
+
+3. Sur la page des habitats, vous pouvez voir la liste des habitats. Cliquez sur un habitat pour voir les animaux présents. cliquez sur un animal pout voir les détails de cet animal dans une modale interactive.
+
+4. La modale vous montrera :
+   - L'image de l'animal
+   - Son état de santé
+   - Son type de nourriture
+   - Son grammage
+   - Le nombre de vues
+
+5. Chaque fois que vous ouvrez la modale d'un animal, le nombre de vues est mis à jour dans la base de données.
+
+## licence
+MIT
+
+## Voici quelques exemples de la requête SQL utilisée:
+
+```php
+- Pour mettre à jour le nombre de vues d'un animal à chaque fois que ses détails sont consultés :
+
+$sql_update = "UPDATE animals SET views = views + 1 WHERE id = ?";
+$stmt_update = $pdo->prepare($sql_update);
+$stmt_update->execute([$id]);
+
+
+- Pour inserer des messages dans la base de données
 
 $stmt = $pdo->prepare("INSERT INTO contact_messages (name, email, message) VALUES (?, ?, ?)");
 $stmt->execute([$name, $email, $message]);
 
-•	Sélection avec protection contre les injections SQL :
+- Pour éviter les injections SQL
 
 $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
 $stmt->execute([$email]);
 $user = $stmt->fetch();
-
-
-MongoDB :
-
-•	Ajout d'un service :
-
-$insertResult = $collection->insertOne([
-'name' => $name,
-'description' => $description,
-'content' => $content,
-'image' => $image_path
-]);
-echo "<p>Service ajouté avec succès !</p>";
-
-•	Récupération des avis des visiteurs – NoSQL (MongoDB):
-
-$collection_reviews = $client->zooarcadia->reviews;
-$reviews = $collection_reviews->find()->toArray();
