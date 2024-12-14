@@ -101,7 +101,7 @@ Bienvenue sur le projet de gestion des habitats et des animaux du Zoo Arcadia. C
 
 2. Depuis la page d'accueil, vous pouvez naviguer vers les sections **Habitats**, **Services**, **Contact**, etc.
 
-3. Sur la page des habitats, vous pouvez voir la liste des habitats. Cliquez sur un habitat pour voir les animaux présents. cliquez sur un animal pout voir les détails de cet animal dans une modale interactive.
+3. Sur la page des habitats, vous pouvez voir la liste des habitats. Cliquez sur un habitat pour voir les animaux présents. cliquez sur un animal pour voir les détails de cet animal dans une modale interactive.
 
 La modale vous montrera :
    - L'image de l'animal
