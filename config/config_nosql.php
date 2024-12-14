@@ -4,7 +4,7 @@
 
     try {
     $client = new MongoDB\Client("mongodb://localhost:27017");
-    $mongoDB = $client; // Assurez-vous que cette variable est définie globalement
+    $mongoDB = $client;
     } catch (Exception $e) {
     die("Erreur de connexion à MongoDB : " . $e->getMessage());
     }
