@@ -37,7 +37,7 @@ Bienvenue sur le projet de gestion des habitats et des animaux du Zoo Arcadia. C
 1. Clonez ce dépôt sur votre machine locale :
 
     ```bash
-    git clone https://github.com/Samirolivier/Arcadia-Zoo.git
+    git clone https://github.com/Samirolivier/ZooArcadia.git
     ```
 
 2. Naviguez dans le dossier du projet :
@@ -46,13 +46,20 @@ Bienvenue sur le projet de gestion des habitats et des animaux du Zoo Arcadia. C
     cd Arcadia-Zoo
     ```
 
-3. Importez la base de données `zooarcadia.sql` fournie dans le dossier `config/`. Vous pouvez le faire via phpMyAdmin.
+3. Importez la base de données MySQL `zooarcadia 9 tables bon.sql` fournie dans le dossier `export/`. Vous pouvez le faire via phpMyAdmin ou en ligne de commande.
 
     ```bash
-    mysql -u root -p zooarcadia < config/zooarcadia.sql
+    mysql -u root -p zooarcadia < export/zooarcadia 9 tables bon.sql
     ```
 
-4. Configurez les paramètres de connexion à la base de données dans le fichier `config/config.php` :
+4. Importez les fichiers pour la base de données NoSQL `zooarcadia.services.json` et `zooarcadia.reviews.json` fournie dans le dossier `export/`. Vous pouvez le faire via MongoDb Compass ou en ligne de commande.
+
+    ```bash
+    mongoimport --db zooarcadia --collection services --file export/zooarcadia.services.json --jsonArray
+    mongoimport --db zooarcadia --collection reviews --file export/zooarcadia.reviews.json --jsonArray
+    ```
+
+5. Configurez les paramètres de connexion à la base de données MySQL dans le fichier `config/config_sql.php` :
 
     ```php
     <?php
@@ -65,15 +72,28 @@ Bienvenue sur le projet de gestion des habitats et des animaux du Zoo Arcadia. C
         $pdo = new PDO("mysql:host=$host;dbname=$dbname, $username, $password);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } catch (PDOException $e) {
-        die("Erreur de connexion à la base données : " . $e->getMessage();
+        die("Erreur de connexion à la base données : " . $e->getMessage());
     }
     ?>
 
-5. Assurez-vous que votre serveur web pointe vers le dossier du projet.
+6. Configurez les paramètres de connexion à la base de données NoSQL dans le fichier `config/config_nosql.php` :
+
+    ```php
+    <?php
+    require __DIR__ . '/../vendor/autoload.php'; // Charger la bibliothèque MongoDB via Composer
+    
+    try {
+    $client = new MongoDB\Client("mongodb://localhost:27017");
+    $mongoDB = $client;
+    } catch (Exception $e) {
+    die("Erreur de connexion à MongoDB : " . $e->getMessage());
+    }
+    ?>
+
 
 ## Utilisation
 
-1. Une fois que vous avez configuré la base de données et démarré le serveur, ouvrez un navigateur et accédez à la page d'accueil du projet :
+1. Une fois que vous avez configuré les base de données et démarré le serveur, ouvrez un navigateur et accédez à la page d'accueil du projet :
 
     ```bash
     http://localhost/arcadia/index.php
@@ -83,35 +103,65 @@ Bienvenue sur le projet de gestion des habitats et des animaux du Zoo Arcadia. C
 
 3. Sur la page des habitats, vous pouvez voir la liste des habitats. Cliquez sur un habitat pour voir les animaux présents. cliquez sur un animal pout voir les détails de cet animal dans une modale interactive.
 
-4. La modale vous montrera :
+La modale vous montrera :
    - L'image de l'animal
    - Son état de santé
    - Son type de nourriture
    - Son grammage
    - Le nombre de vues
 
-5. Chaque fois que vous ouvrez la modale d'un animal, le nombre de vues est mis à jour dans la base de données.
+Chaque fois que vous ouvrez la modale d'un animal, le nombre de vues est mis à jour dans la base de données.
+   
+4. Sur la page Services utilisant MongoDB pour afficher dynamiquement les services disponibles au zoo, vous pouvez ajouter, modifier ou supprimer des services directement dans la collection services de MongoDB ou en passant par une accès administrateur ou employé.
+   
+5. Avis des visiteurs: Les visiteurs peuvent laisser un avis sur leur expérience au zoo. Ces avis sont stockés dans la collection reviews de MongoDB et peuvent être affichés ou filtrés sur une page dédiée(employe_dashboard.php).
 
 ## licence
 MIT
 
 ## Voici quelques exemples de la requête SQL utilisée:
 
+MySQL
+
 ```php
-- Pour mettre à jour le nombre de vues d'un animal à chaque fois que ses détails sont consultés :
+- Pour mettre à jour les informations du modal sur les aniamaux à chaque fois que ses détails sont consultés :
 
-$sql_update = "UPDATE animals SET views = views + 1 WHERE id = ?";
-$stmt_update = $pdo->prepare($sql_update);
-$stmt_update->execute([$id]);
+document.getElementById('modalImage').src = data.image || 'placeholder.jpg';
+document.getElementById('modalName').textContent = data.name || 'Nom non disponible';
+document.getElementById('modalFood').textContent = 'Nourriture donnée : ' + (data.food || 'Non disponible');
+document.getElementById('modalWeight').textContent = 'Grammage : ' + (data.weight || 'Non disponible') + ' g';
+document.getElementById('modalHealthStatus').textContent = 'État de santé : ' + (data.health_status || 'Non disponible');
+document.getElementById('modalViews').textContent = 'Nombre de vues : ' + (data.views || '0');
 
 
-- Pour inserer des messages dans la base de données
+- Requête préparée pour éviter les injections SQL lors d’une insertion d'un message de contact 
 
 $stmt = $pdo->prepare("INSERT INTO contact_messages (name, email, message) VALUES (?, ?, ?)");
 $stmt->execute([$name, $email, $message]);
 
-- Pour éviter les injections SQL
+- Sélection avec protection contre les injections SQL 
 
 $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
 $stmt->execute([$email]);
 $user = $stmt->fetch();
+
+```
+
+NoSQL (MongoDB)
+
+```php
+- Ajout d'un service 
+
+$insertResult = $collection->insertOne([
+'name' => $name,
+'description' => $description,
+'content' => $content,
+'image' => $image_path
+]);
+echo "<p>Service ajouté avec succès !</p>";
+
+
+- Récupération des avis des visiteurs 
+
+$collection_reviews = $client->zooarcadia->reviews;
+$reviews = $collection_reviews->find()->toArray();
