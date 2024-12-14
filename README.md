@@ -29,7 +29,7 @@ Bienvenue sur le projet de gestion des habitats et des animaux du Zoo Arcadia. C
 
 - PHP >= 8.1.100
 - MySQL
-- MongoDG
+- MongoDB
 - Serveur web Apache 2.4.54
 
 ## Installation
