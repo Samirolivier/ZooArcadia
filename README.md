@@ -43,7 +43,7 @@ Bienvenue sur le projet de gestion des habitats et des animaux du Zoo Arcadia. C
 2. Naviguez dans le dossier du projet :
 
     ```bash
-    cd Arcadia-Zoo
+    cd ZooArcadia
     ```
 
 3. Importez la base de données MySQL `zooarcadia 9 tables bon.sql` fournie dans le dossier `export/`. Vous pouvez le faire via phpMyAdmin ou en ligne de commande.
