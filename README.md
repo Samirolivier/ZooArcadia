@@ -1,6 +1,6 @@
 # ZooArcadia - Gestion des Habitats et Animaux
 
-Bienvenue sur le projet de gestion des habitats et des animaux du Zoo Arcadia. Ce projet permet de consulter les habitats du zoo ainsi que les détails sur les animaux qui y résident, tout en incluant des informations telles que leur état de santé, leur alimentation et leur grammage, le nombre de vue des animaux... Le projet inclut également la gestion des services proposés par le zoo et des avis (reviews) des visiteurs grâce à l'intégration de MongoDB.
+Bienvenue sur le projet de gestion des habitats et des animaux du Zoo Arcadia. Ce projet permet de consulter les habitats du zoo ainsi que les détails sur les animaux qui y résident, tout en incluant des informations telles que leur état de santé, leur alimentation et leur grammage, le nombre de vue des animaux etc. Le projet inclut également la gestion des services proposés par le zoo et des avis (reviews) des visiteurs grâce à l'intégration de MongoDB.
 
 ## Fonctionnalités
 
