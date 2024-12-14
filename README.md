@@ -112,7 +112,7 @@ La modale vous montrera :
 
 Chaque fois que vous ouvrez la modale d'un animal, le nombre de vues est mis à jour dans la base de données.
    
-4. Sur la page Services utilisant MongoDB pour afficher dynamiquement les services disponibles au zoo, vous pouvez ajouter, modifier ou supprimer des services directement dans la collection services de MongoDB ou en passant par une accès administrateur ou employé.
+4. Sur la page Services utilisant MongoDB pour afficher dynamiquement les services disponibles au zoo, vous pouvez ajouter, modifier ou supprimer des services directement dans la collection services de MongoDB ou en passant par un accès administrateur ou employé.
    
 5. Avis des visiteurs: Les visiteurs peuvent laisser un avis sur leur expérience au zoo. Ces avis sont stockés dans la collection reviews de MongoDB et peuvent être affichés ou filtrés sur une page dédiée(employe_dashboard.php).
 
